@@ -1,0 +1,13 @@
+doctype html
+html
+  include ./includes/head
+  body.py-0.bg-info
+    .container
+      include ./includes/navheader
+      block content
+      .container.bg-faded.mt-0.py-3.text-right
+        p
+        | &copy; 2017 |
+        i.fa.fa-github(aria-hidden='true') &nbsp;
+        a(href='https://github.com/AlessandroRomanelli/' target="_blank") Alessandro Romanelli
+  include ./includes/scripts
