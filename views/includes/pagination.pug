@@ -1,0 +1,26 @@
+nav.float-right(aria-label='Page navigation example')
+  ul.pagination.pagination-sm
+    li.page-item
+      a.page-link(href='#', aria-label='Previous')
+        span(aria-hidden='true') «
+        span.sr-only Previous
+    -var index = 0;
+    if (data.page > 3)
+      while index < data.total_pages && index < 5
+        li.page-item
+          if (data.page == data.total_pages)
+            a.page-link(href=`${data.page+index-4}`)=data.page+index-4
+          else if (data.page == data.total_pages-1)
+            a.page-link(href=`${data.page+index-3}`)=data.page+index-3
+          else
+            a.page-link(href=`${data.page+index-2}`)=data.page+index-2
+        - index++
+    else
+      while index < data.total_pages && index < 5
+        li.page-item
+          a.page-link(href=`${index+1}`)=index+1
+        - index++
+    li.page-item
+      a.page-link(href='#', aria-label='Next')
+        span(aria-hidden='true') »
+        span.sr-only Next

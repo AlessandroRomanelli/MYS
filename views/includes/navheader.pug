@@ -1,29 +1,29 @@
-nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
+nav.navbar.navbar-toggleable-md.navbar-light.bg-faded.container
   button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
-  a.navbar-brand(href='#')
+  a.navbar-brand(href='/')
     img.d-inline-block.align-top(src='/images/logo.svg', width='30', height='30', alt='')
     |     MYS
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
       li.nav-item.active
-        a.nav-link(href='#')
+        a.nav-link(href='/')
           | Home
           span.sr-only (current)
       li.nav-item
-        a.nav-link(href='#') About
-        if user
-          li.nav-item.dropdown
-            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='http://example.com', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-              | My Profile
-            .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-              a.dropdown-item(href='#') Action
-              a.dropdown-item(href='#') Another action
-              a.dropdown-item(href='#') Something else here
-        else
-          li.nav-item
-            a.nav-link(href='#') My Profile
+        a.nav-link(href='/search') Search
+      if user
+        li.nav-item
+          a.nav-link(href='/profile') My Profile
+      else 
+        li.nav-item
+          a.nav-link(href='/users/register') Register
       li.nav-item
-        a.nav-link(href='#') Contacts
-    form.form-inline.my-2.my-lg-0
-      button.btn.btn-outline-primary.my-2.my-sm-0(type='submit') Login
+        a.nav-link(href='/about') About
+    .my-2.my-lg-0
+      if user
+        form.d-inline(action="/users/logout", method="GET")
+          button.btn.btn-outline-primary.my-2.my-sm-0(type='submit') Logout
+      else 
+        button.btn.btn-outline-primary.my-2.my-sm-0(type='button' data-toggle="modal" data-target="#loginModal") Login
+        include ./login-modal

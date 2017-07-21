@@ -1,6 +1,6 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  .jumbotron.text-center
+    span  Oh oh! Something went wrong!
+    h1.display-4 <strong>#{error.status}</strong>: #{message} 

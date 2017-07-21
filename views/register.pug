@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  .jumbotron
+    img.d-inline.ml-2(src='/images/profile.svg' width="40" height="40" style="margin: 0 10px 25px 0")
+    h1.display-5.d-inline-block New User Registration
+  form.px-4(action='/users/register', method="POST")
+    if errors
+      div.col-md-6.alert.alert-danger(role="alert")
+        p 
+          b Bad request:
+        ul
+         each error in errors
+           li=error.message
+           
+    .form-group.row
+      label.col-md-3.col-form-label(for='inputFirstname') First Name:
+        input#inputFirstname.form-control(type='text', name="firstName", placeholder='Enter your first name')
+      label.col-md-3.col-form-label(for='inputLastname') Last Name:
+        input#inputLastname.form-control(type='text', name="lastName", placeholder='Enter your last name')
+    .form-group.row
+      label.col-form-label.col-md-6(for='inputMail') Email address:
+        input#inputMail.form-control(type='email', name="email", aria-describedby='emailHelp', placeholder='Enter email')
+        small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+    .form-group.row
+      label.col-form-label.col-md-3(for='inputPassword') Password:
+        input#inputPassword.form-control(type='password', name="password", aria-describedby='passwordHelp', placeholder='Password')
+        small#passwordHelp.form-text.text-muted Must be at least 8 characters long.
+      label.col-form-label.col-md-3(for='inputConfirm') Confirm Password:
+        input#inputConfirm.form-control(type='password', name="confirmPassword", aria-describedby='confirmHelp', placeholder='Password')
+        small#confirmHelp.form-text.text-muted Must match the password you just entered.
+    fieldset.form-group
+      legend End-User License Agreement
+      .form-group
+        textarea.form-control(rows="15", readonly='')
+          include includes/eula.pug
+        .form-check.text-center.mt-2
+          label.form-check-label.radio-inline
+            input#optionsRadios1.form-check-input(type='radio', name='eulaAgree', value='true', checked='')
+            |         I AGREE
+          label.form-check-label.radio-inline.ml-3
+            input#optionsRadios2.form-check-input(type='radio', name='eulaAgree', value='false')
+            |         I <strong><u>DO NOT</u></strong> AGREE
+    button.btn.btn-primary(type='submit') Submit

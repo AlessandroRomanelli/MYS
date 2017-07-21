@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  .jumbotron.mt-0.row.bg-invert
+    .row
+      .col-12
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href='/') Home
+          li.breadcrumb-item
+            a(href='javascript:history.back()') Search Results
+          li.breadcrumb-item.active=movie.title
+    .row
+      .col-3
+        if (movie.poster_path)
+          img.img-fluid.rounded(src=`http://image.tmdb.org/t/p/w342/${movie.poster_path}`)
+        else
+          img.img-fluid.rounded(src='/images/movie.jpeg')
+      .col-9
+        h1.display-4=movie.original_title
+        p.lead
+          each director, index in movie.directors
+            if index < 1
+              | #{director}
+            else
+              | , #{director}
+          |  &#8212; #{movie.release_date.slice(0,4)}
+        p=movie.overview
+        hr
+        if songs
+          p.lead Soundtracks:
+          table.table.table-hover.table-bordered.table-striped
+            thead
+              tr
+                th &#8212;
+                th Song
+                th Artist
+                th Duration
+            tbody
+              each song, index in songs
+                tr
+                  th(scope='row')
+                    if song.favorite
+                      form(action=`/users/tracks?_method=DELETE`, method="POST")
+                        input(type="image" name="id" value=`${song.id}` src="/images/star-fill.svg" alt="Save" height="20" width="20")
+                    else
+                      form(action=`/users/tracks?_method=PUT`, method="POST")
+                        input(type="image" name="id" value=`${song.id}` src="/images/star-empty.svg" alt="Save" height="20" width="20")
+                  td
+                    a(href=`${song.external_urls.spotify}` target="_blank")=song.name
+                  td=song.artistsString.join(', ')
+                  td=song.duration
+        else
+          .alert.alert-danger(role='alert')
+            strong Oh snap!
+            |  We could not find any soundtrack for the movie you searched!

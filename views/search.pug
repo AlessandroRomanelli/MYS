@@ -1,0 +1,54 @@
+extends layout
+
+block content
+  .jumbotron.mt-0
+    p.display-4 What are you waiting for?
+    form.form-inline.my-2.my-lg-0(action="/search/movies" method="GET")
+      input.form-control.mr-sm-2(type="text" name="movie_name" placeholder="Type something...")
+      input.form-control.d-none(type="number" name="page" value="1")
+      button.btn.btn-outline-primary.my-2.my-sm-0(type="submit") Search
+    if error
+      br
+      .alert.alert-danger(role='alert')
+        strong Oh snap!
+        |  You need to enter something to search!
+  if data
+
+    if data.total_results > 0
+      .row
+        .col-3
+          img.img-fluid.rounded(src='/images/search.jpeg')
+        .col-9
+            p.lead.float-left Results:
+            if (data.total_results > 20)
+              p.max-pages.lead.text-muted.float-left.ml-3 ( Page #{data.page} of #{data.total_pages} )
+
+            if (data.total_results > 20)
+              include ./includes/pagination
+
+            table.table.table-hover
+              thead
+                tr
+                  th #
+                  th Movie
+                  th Year
+                  th Score
+                tbody
+                  each movie, index in data.results
+                    tr
+                      th(scope='row')=(index+1)
+                      td
+                        if (movie.original_title != movie.title)
+                          a(href=`movies/${movie.id}`) #{movie.title} #{space}
+                          | &#8212; #{movie.original_title}
+                        else
+                          a(href=`movies/${movie.id}`)=movie.title
+                      td=movie.release_date.slice(0,4)
+                      td=movie.popularity
+
+            if (data.total_results > 20)
+              include ./includes/pagination
+
+    else
+      img.img-fluid.mx-auto.d-block.mb-3(src="/images/data.png" width="50" height="50")
+      h5.text-center.text-danger We are sorry, no movies were found matching your search parameters.
