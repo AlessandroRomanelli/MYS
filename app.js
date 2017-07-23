@@ -40,7 +40,7 @@ function generateOrFindUser (accessToken, refreshToken, profile, done) {
 passport.use(new SpotifyStrategy({
     clientID: process.env.SPOTIFY_APP_ID,
     clientSecret: process.env.SPOTIFY_APP_SECRET,
-    callbackURL: "http://localhost:3000/users/spotify/return"},
+    callbackURL: "https://mys-treehouse.herokuapp.com/users/spotify/return"},
     generateOrFindUser
 ));
 
