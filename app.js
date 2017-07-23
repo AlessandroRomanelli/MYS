@@ -38,8 +38,8 @@ function generateOrFindUser (accessToken, refreshToken, profile, done) {
 
 //Configure spotify Strategy
 passport.use(new SpotifyStrategy({
-    clientID: process.env.SPOTIFY_APP_ID || "eb9c368e41ab454fba821c00ec73805b",
-    clientSecret: process.env.SPOTIFY_APP_SECRET || "4055d2c4df6546fea8b395cc8ebf1ed5",
+    clientID: process.env.SPOTIFY_APP_ID,
+    clientSecret: process.env.SPOTIFY_APP_SECRET,
     callbackURL: "http://localhost:3000/users/spotify/return"},
     generateOrFindUser
 ));
@@ -52,7 +52,7 @@ passport.deserializeUser(function(userId, done) {
   User.findById(userId, done);
 });
 
-mongoose.connect("mongodb://localhost:27017/mys");
+mongoose.connect(process.env.MONGODB_URI);
 var db = mongoose.connection;
 
 app.use(session({

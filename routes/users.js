@@ -5,7 +5,7 @@ var User = require('../models/users');
 var bcrypt = require('bcrypt');
 var passport = require('passport');
 
-var spotifyAuth = ["eb9c368e41ab454fba821c00ec73805b", "4055d2c4df6546fea8b395cc8ebf1ed5"];
+var spotifyAuth = [process.env.SPOTIFY_APP_ID, process.env.SPOTIFY_APP_SECRET];
 
 
 //GET /users/register

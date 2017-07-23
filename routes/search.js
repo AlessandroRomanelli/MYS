@@ -4,7 +4,7 @@ var express = require('express');
 var router = express.Router();
 var rp = require('request-promise')
 
-var spotifyAuth = ["eb9c368e41ab454fba821c00ec73805b", "4055d2c4df6546fea8b395cc8ebf1ed5"];
+var spotifyAuth = [process.env.SPOTIFY_APP_ID, process.env.SPOTIFY_APP_SECRET];
 
 var optionsTMDb = {
   baseUrl: "https://api.themoviedb.org/3/",
