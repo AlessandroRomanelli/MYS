@@ -1,0 +1,12 @@
+tr
+  th(scope='row' style='vertical-align: middle')
+    if song.favorite
+      form(action=`/users/tracks?_method=DELETE`, method="POST")
+        input.star(type="image" name="id" value=`${song.id}` src="/images/star-fill.svg" alt="Remove" height="20" width="20")
+    else
+      form(action=`/users/tracks?_method=PUT`, method="POST")
+        input.star(type="image" name="id" value=`${song.id}` src="/images/star-empty.svg" alt="Save" height="20" width="20")
+  td(style='vertical-align: middle')
+    a(href=`${song.external_urls.spotify}` target="_blank")=song.name
+  td(style='vertical-align: middle')=song.artistsString.join(', ')
+  td(style='vertical-align: middle')=song.duration

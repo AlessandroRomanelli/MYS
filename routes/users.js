@@ -1,8 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var rp = require('request-promise')
 var User = require('../models/users');
 var bcrypt = require('bcrypt');
 var passport = require('passport');
+
+var spotifyAuth = ["eb9c368e41ab454fba821c00ec73805b", "4055d2c4df6546fea8b395cc8ebf1ed5"];
+
 
 //GET /users/register
 router.get('/register', function(req, res, next) {
@@ -50,18 +54,24 @@ router.post('/register', function(req, res, next) {
 });
 
 router.put('/tracks', function(req, res, next) {
-  var favorites = req.user.favorites;
-  if (req.user.favorites.indexOf(req.body.id) === -1) {
-    favorites.push(req.body.id);
-  };
-  User.findOneAndUpdate(
-    {"_id": req.user._id},
-    {"favorites": favorites},
-    function(err, doc) {
-      console.log(doc)
-    }
-  );
-  res.redirect(req.get('referer'));
+  if (req.user) {
+    var favorites = req.user.favorites;
+    if (req.user.favorites.indexOf(req.body.id) === -1) {
+      favorites.push(req.body.id);
+    };
+    User.findOneAndUpdate(
+      {"_id": req.user._id},
+      {
+        "favorites": favorites,
+      },
+      function(err, doc) {
+        return true
+      }
+    );
+    res.redirect(req.get('referer'));
+  } else {
+    res.redirect(req.get('referer'));
+  }
 })
 
 router.delete('/tracks', function(req, res, next) {
@@ -75,12 +85,80 @@ router.delete('/tracks', function(req, res, next) {
   };
   User.findOneAndUpdate(
     {"_id":req.user._id},
-    {"favorites": favorites},
+    {
+      "favorites": favorites,
+    },
     function(err, doc) {
-      console.log(doc)
+      return true
     }
   );
   res.redirect(req.get('referer'));
+});
+
+router.get('/tracks/save', function(req, res, next) {
+  var data = {};
+  var key64 = new Buffer(spotifyAuth.join(':')).toString('base64');
+  rp.post({
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Content-Type'  : "application/x-www-form-urlencoded",
+      'Authorization' : `Basic ${key64}`
+    },
+    qs: {
+      grant_type: 'refresh_token',
+      refresh_token: req.user.refreshToken
+    }
+  })
+  .then(response => {
+    response = JSON.parse(response);
+    data.access_token = response.access_token;
+    var body = JSON.stringify({
+      name: 'MYS Exported tracks',
+      public: false,
+      description: 'A playlist of songs exported the MYS website'
+    });
+    return rp.post({
+      url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists`,
+      headers: {
+        'Authorization' : `Bearer ${response.access_token}`,
+        'Content-Type'  : 'application/json'
+      },
+      body: body
+    })
+    .then(response => {
+      response = JSON.parse(response);
+      data.playlistUrl = response.href;
+      return data;
+    })
+    .then(data => {
+      favoritesUri = [];
+      var favorites = req.user.favorites;
+      for (var i = 0; i < favorites.length; i ++) {
+        var uri = `spotify:track:${favorites[i]}`;
+        favoritesUri.push(uri);
+      }
+      var body = JSON.stringify({
+        uris: favoritesUri
+      });
+      return rp.post({
+        url: `${data.playlistUrl}/tracks`,
+        headers: {
+          'Authorization' : `Bearer ${data.access_token}`,
+          'Content-Type'  : 'application/json'
+        },
+        body: body
+      })
+      .then(response => {
+        res.redirect('/profile');
+      })
+      .catch(err => {
+        return next(err);
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+  })
 });
 
 router.post('/login', function(req, res, next) {
@@ -115,12 +193,14 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/login/spotify',
-    passport.authenticate('spotify'));
+  passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'playlist-modify-private']})
+);
 
 router.get('/spotify/return',
     passport.authenticate('spotify', {failureRedirect: '/'}),
     function(req, res) {
       //Success auth, redirect
+      debugger
       res.redirect('/profile');
     });
 
@@ -130,3 +210,71 @@ router.get('/logout', function(req, res) {
 })
 
 module.exports = router;
+
+// var data = {};
+// var key64 = new Buffer(spotifyAuth.join(':')).toString('base64');
+// return rp.post({
+//   url: "https://accounts.spotify.com/api/token",
+//   headers: {
+//     'Content-Type'  : "application/x-www-form-urlencoded",
+//     'Authorization' : `Basic ${key64}`
+//   },
+//   qs: {
+//     grant_type: "client_credentials"
+//   }
+// })
+// .then(response => {
+//   response = JSON.parse(response);
+//   data.token = response.access_token;
+//   return data
+// })
+// .then(data => {
+//   return rp.post({
+//     url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists`,
+//     headers: {
+//       'Authorization' : `Bearer ${data.token}`,
+//       'Content-Type'  : 'application/json'
+//     },
+//     body: {
+//       name: 'MYS Playlist',
+//       description: 'A playlist exported by the MYS website'
+//     },
+//     json: true
+//   })
+//   .then(response => {
+//     response = JSON.parse(response);
+//     data.playlist = response;
+//     return data
+//   })
+//   .catch(err => {
+//     return next(err);
+//   });
+// })
+// .then(data => {
+//   favoritesUri = [];
+//   var favorites = req.user.favorites;
+//   for (var i = 0; i < favorites.length; i ++) {
+//     var uri = `spotify:track:${favorites[i]}`;
+//     favoritesUri.push(uri);
+//   }
+//   return rp.post({
+//     url: `https://api.spotify.com/v1/users/${user.spotifyId}/playlists/${data.playlist.id}/tracks`,
+//     headers: {
+//       'Authorization' : `Bearer ${data.token}`,
+//       'Content-Type'  : 'application/json'
+//     },
+//     body: {
+//       uris: user.favoritesUri
+//     },
+//     json: true
+//   })
+//   .then(response => {
+//     res.redirect(req.get('referer'));
+//   })
+//   .catch(err => {
+//     return next(err);
+//   });
+// })
+// .catch(err => {
+//   return next(err);
+// });

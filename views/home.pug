@@ -6,7 +6,7 @@ block content
       .row
         .col-3.mt-3
           | MYS is your new soundtrack search engine, engineered to find the soundtracks of the movie you liked so much!
-        .col-4.bg-inverse.text-white.border.rounded.offset-1
+        #appTitle.col-4.bg-inverse.text-primary.border.rounded.offset-1
           h1.display-1 MYS
         .col-3.mt-3.offset-1
           | It takes advantage of two powerful databases, TMDb for a infinite movie collection, and Spotify to provide the music.
@@ -22,8 +22,8 @@ block content
             img(src='/images/tmdb.svg' width="30" height="30" style="margin-left: 5px")
         
     hr.my-4
-    p.display-4 Never MYS a soundtrack again!
+    p#appSubtitle.display-4.bg-inverse.rounded.text-primary.py-3 Never MYS a soundtrack again!
     p
-      | Use your profile page to view your latest searches and saved songs, or simply browse anonymously
+      | You can visit your profile page and review your saved songs and export them to spotify, or you can simply browse anonymously
     p.lead
       a.btn.btn-primary.btn-lg(href='/search', role='button') Start now!

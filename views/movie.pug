@@ -18,12 +18,7 @@ block content
           img.img-fluid.rounded(src='/images/movie.jpeg')
       .col-9
         h1.display-4=movie.original_title
-        p.lead
-          each director, index in movie.directors
-            if index < 1
-              | #{director}
-            else
-              | , #{director}
+        p.lead=movie.directors.join(', ')
           |  &#8212; #{movie.release_date.slice(0,4)}
         p=movie.overview
         hr
@@ -38,19 +33,19 @@ block content
                 th Duration
             tbody
               each song, index in songs
-                tr
-                  th(scope='row')
-                    if song.favorite
-                      form(action=`/users/tracks?_method=DELETE`, method="POST")
-                        input(type="image" name="id" value=`${song.id}` src="/images/star-fill.svg" alt="Save" height="20" width="20")
-                    else
-                      form(action=`/users/tracks?_method=PUT`, method="POST")
-                        input(type="image" name="id" value=`${song.id}` src="/images/star-empty.svg" alt="Save" height="20" width="20")
-                  td
-                    a(href=`${song.external_urls.spotify}` target="_blank")=song.name
-                  td=song.artistsString.join(', ')
-                  td=song.duration
+                include ./includes/song
         else
           .alert.alert-danger(role='alert')
             strong Oh snap!
-            |  We could not find any soundtrack for the movie you searched!
+            |  We could not find any soundtrack for the movie are looking for!
+    if createPlaylist
+      .row
+        .col-lg-6.offset-lg-3
+          if createPlaylist.error
+            .alert.alert-danger
+              strong Oh oh! #{space}
+              | Something went wrong when trying to create your playlist
+          else 
+            .alert.alert-success
+              strong Hooray! #{space}
+              | Your playlist was successfully exported. Check your Spotify!

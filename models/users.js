@@ -31,9 +31,10 @@ var UserSchema = new Schema({
     required: [true, 'Password is required'],
     minlength: [8, 'Password is too short']
   },
-  favorites: [{
+  refreshToken: String,
+  favorites: {
     type: [String]
-  }]
+  }
 })
 
 UserSchema.pre('save', function(next) {

@@ -10,14 +10,14 @@ block content
     if error
       br
       .alert.alert-danger(role='alert')
-        strong Oh snap!
-        |  You need to enter something to search!
+        strong I'm sorry.
+        |  You need to type in something before running a search!
   if data
 
     if data.total_results > 0
       .row
         .col-3
-          img.img-fluid.rounded(src='/images/search.jpeg')
+          img.img-fluid.rounded(src='/images/search.jpg')
         .col-9
             p.lead.float-left Results:
             if (data.total_results > 20)

@@ -1,0 +1,44 @@
+#appTitle h1 {
+  font-weight: 900;
+}
+
+#appTitle,
+#appSubtitle {
+  border-radius: 50px;
+}
+
+#profilePic {
+  border: 1px solid rgba(0,0,0,0.75);
+  border-radius: 50%;
+  -webkit-box-shadow: 2px 2px 15px 5px rgba(0, 0, 0, 0.2),
+                      2px 2px 5px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 2px 2px 15px 5px rgba(0, 0, 0, 0.2),
+                   2px 2px 5px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 15px 5px rgba(0, 0, 0, 0.2),
+              2px 2px 5px 0px rgba(0, 0, 0, 0.4);
+}
+
+a#export img{
+  transition: 0.2s ease-in-out;
+}
+
+a#export:hover img {
+  transform: scale(1.2);
+}
+
+.logo img {
+  transition: 0.2s ease-in-out;
+}
+
+.logo img:hover {
+  transform: scale(1.15);
+}
+
+input.star[alt='Save'] {
+  transition: 0.2s ease-in-out;
+  opacity: 0.2;
+}
+
+input.star[alt='Save'].hover {
+  opacity: 0.5;
+}

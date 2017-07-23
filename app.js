@@ -17,14 +17,15 @@ var methodOverride = require('method-override')
 var app = express();
 
 function generateOrFindUser (accessToken, refreshToken, profile, done) {
-  if(profile.id) {
+  if(profile.emails[0]) {
     User.findOneAndUpdate({
-      email: profile.id
+      email: profile.emails[0].value
     }, {
       spotifyId: profile.id,
       fullName: profile.displayName,
-      email: profile.id,
-      profilePic: profile.photos[0]
+      email: profile.emails[0].value,
+      profilePic: profile.photos[0],
+      refreshToken: refreshToken
     }, {
       upsert: true
     },
@@ -35,7 +36,7 @@ function generateOrFindUser (accessToken, refreshToken, profile, done) {
   };
 };
 
-//Configure facebook Strategy
+//Configure spotify Strategy
 passport.use(new SpotifyStrategy({
     clientID: process.env.SPOTIFY_APP_ID || "eb9c368e41ab454fba821c00ec73805b",
     clientSecret: process.env.SPOTIFY_APP_SECRET || "4055d2c4df6546fea8b395cc8ebf1ed5",

@@ -4,9 +4,9 @@ block content
   .jumbotron
     .media
       if user.profilePic
-        img.d-flex.align-self-center.mr-4.rounded-circle(src=`${user.profilePic}` width="100", height="100")
+        img#profilePic.d-flex.align-self-center.mr-4.rounded-circle(src=`${user.profilePic}` width="100", height="100")
       else
-        img.d-flex.align-self-center.mr-4.rounded-circle(src="/images/profile.svg" width="100", height="100")
+        img#profilePic.d-flex.align-self-center.mr-4.rounded-circle(src="/images/profile.svg" width="100", height="100")
       .media-body
         small.ml-3
           strong PROFILE PAGE
@@ -22,25 +22,18 @@ block content
           th Duration
       tbody
         each song in songs
-          tr
-            th(scope='row')
-              if song.favorite
-                form(action=`/users/tracks?_method=DELETE`, method="POST")
-                  input(type="image" name="id" value=`${song.id}` src="/images/star-fill.svg" alt="Save" height="20" width="20")
-              else
-                form(action=`/users/tracks?_method=PUT`, method="POST")
-                  input(type="image" name="id" value=`${song.id}` src="/images/star-empty.svg" alt="Save" height="20" width="20")
-            td
-              a(href=`${song.external_urls.spotify}` target="_blank")=song.name
-            td=song.artistsString.join(', ')
-            td=song.duration
-    .media
-      .media-body.mt-0(style='line-height: 50px')
-        a(href="/users/tracks/save")
-          small.float-right.mr-2
-            strong CREATE PLAYLIST
-      img.d-flex.align-self-center.mr-4(src='/images/playlist.svg' width="30" height="30")
+          include ./includes/song
+    if user.spotifyId
+      .media
+        .media-body.mt-0(style='line-height: 50px')
+          a(href="/users/tracks/save")
+            small.float-right.mr-2
+              strong EXPORT AS PLAYLIST
+        img.d-flex.align-self-center.mr-4(src='/images/playlist.svg' width="30" height="30")
+    else
+      small
+        strong Did you know? #{space}
+        | If you log in using your Spotify account you'll be able to export your favorite songs as a playlist, isn't that awesome?
   else
     .alert.alert-warning(role='alert')
-      strong Oh oh! #{space}
-      | You still don't have any saved tracks, star any record you find and you'll be able to find them later in this page.
+      | There are no saved tracks, star any record you like and you'll be able to find them later in this page.
