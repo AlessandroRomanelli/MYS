@@ -26,6 +26,17 @@ a#export:hover img {
   transform: scale(1.2);
 }
 
+.badge-firstletter {
+  text-align: right;
+  float: left;
+  width: 200px;
+  height: 40px;
+  margin-top: 5px;
+  margin-right: 10px;
+  color: #081c24;
+  border: 1px solid #081c24;
+}
+
 .logo img {
   transition: 0.2s ease-in-out;
 }

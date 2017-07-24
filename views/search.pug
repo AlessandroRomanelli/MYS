@@ -4,7 +4,7 @@ block content
   .jumbotron.mt-0
     p.display-4 What are you waiting for?
     form.form-inline.my-2.my-lg-0(action="/search/movies" method="GET")
-      input.form-control.mr-sm-2(type="text" name="movie_name" placeholder="Type something...")
+      input.form-control.mr-sm-2(type="text" name="movie_name" placeholder="Type a movie title...")
       input.form-control.d-none(type="number" name="page" value="1")
       button.btn.btn-outline-primary.my-2.my-sm-0(type="submit") Search
     if error

@@ -38,9 +38,9 @@ function generateOrFindUser (accessToken, refreshToken, profile, done) {
 
 //Configure spotify Strategy
 passport.use(new SpotifyStrategy({
-    clientID: process.env.SPOTIFY_APP_ID,
-    clientSecret: process.env.SPOTIFY_APP_SECRET,
-    callbackURL: "https://mys-treehouse.herokuapp.com/users/spotify/return"},
+    clientID: process.env.SPOTIFY_APP_ID || "eb9c368e41ab454fba821c00ec73805b",
+    clientSecret: process.env.SPOTIFY_APP_SECRET || "4055d2c4df6546fea8b395cc8ebf1ed5",
+    callbackURL: "http://localhost:3000/users/spotify/return"},
     generateOrFindUser
 ));
 
@@ -52,7 +52,7 @@ passport.deserializeUser(function(userId, done) {
   User.findById(userId, done);
 });
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/mys");
 var db = mongoose.connection;
 
 app.use(session({
@@ -69,8 +69,7 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(methodOverride('_method'));
 app.use(logger('dev'));
 app.use(bodyParser.json());

@@ -3,10 +3,67 @@ extends layout
 block content
   .jumbotron.bg-faded
     .display-1(style='font-weight: bolder') About
-    hr
+    hr.bg-primary
     br
-    h3 The project:
-    strong MYS #{space}
-    | is a project single-handedly developed by Treehouse student 
-    strong Alessandro Romanelli
-    | .
+    .media
+      .media-body
+        h1.mt-1
+          .badge.badge-primary.badge-firstletter.mt-2(style='border-right: none;   border-radius: 20px 0 0 20px') The Project:
+        p.text-justify
+          strong MYS #{space}
+          | is a project single-handedly developed by Treehouse student 
+          strong Alessandro Romanelli
+          | , who had been tasked to build an app from the very scratch. 
+          | With a countless posibilities and having only the sky as limit, 
+          | he set himself on a journey that would last approximately a week 
+          | before reaching the goals which were set for him.
+        p.text-justify
+          | The main goal was to showcase everything he had learned over the last six months during his Javascript FullStack course at Treehouse. 
+          | He knew already that it wasn't exactly going to be easy: without any already given fundation, he had to overcome three main problems:
+          ul
+            li Coming up with a creative idea, a layout and a working schema;
+            li Mixing together all he had learned over the months, from front-end to back-end;
+            li Creating the contents and binding his website with some REST APIs, from which to retrieve the data the user sought.
+      img.img-fluid.rounded.d-flex.align-self-top.ml-3.mt-3.hidden-md-down(src='/images/about1.jpeg' style='max-width: 300px')
+  
+    .media
+      .media-body
+        h1.mt-1
+          .badge.badge-primary.badge-firstletter.mt-2(style='border-right: none;   border-radius: 20px 0 0 20px') The Criteria:
+        p.text-justify
+          | As an real-world project, there were restrictions to what a developer could do, those restrictions being dictated by the Treehouse teachers or by a potential customer, it didn't matter. Ultimately, the goal of every
+          | developer should always be to match the criteria that the employer has set. 
+          br 
+          | The criteria for this project were much less strict and they were the following:
+          ol
+            li Must interact with at least 2 other REST APIs;
+            li Must properly display the data being sent by the APIs;
+            li Must be built using JS technologies, such as Node and Express;
+            li Must use a framework, like Bootstrap, to style the front-end;
+            li Must use a relational or document-based database;
+            li Must be deployed on a hosting service like Heroku;
+    .media
+      .media-body
+        h1.mt-1
+          .badge.badge-primary.badge-firstletter.mt-2(style='border-right: none;   border-radius: 20px 0 0 20px') The Making:
+        p.text-justify
+          | In these kind of projects, the hardest thing is probably getting inspired enough to begin with. He sat down for a whole day trying to think about something that could be potentially interesting and exciting.
+          | He started off this project thinking that it would become his own personal portfolio, but he soon realised that the structure he though of woudln't have fitted the criteria of the project.
+        p.text-justify
+          | He ended up back where it started, on the instructions sheet and there he read about a concept which captured his attention:
+          br
+          i.lead "Match a film with its soundtrack using the OMDb and Spotify APIs"
+          br
+          | At first it sounded a bit dull, but as he started working from that simple idea, more new features came up his mind and sooner than later he implemented them all.
+      img.img-fluid.rounded.d-flex.align-self-top.ml-3.mt-3.hidden-md-down(src='/images/about2.jpeg' style='max-width: 300px')
+    p.text-justify
+      | Initally he began developing a very basic Express application, that would correctly work on his own. The website was basic, we could navigate the different pages and the website and retrieve different contents, but still pretty simple. 
+    p.text-justify
+      | Once Express was in place, it was time to start building the interactions with the REST APIs. To his great disappointment, the OMDb APIs that was being suggested to be over the time had become a pay-to-use API, which meant that it was to be discared for his project.
+      br 
+      | To his aid came TMDb, a free to use API which offered the same kind of service as OMDb but free of charge, 
+      strong awesome!
+    p.text-justify
+      | At that point in time, a visitor could search anonymously for any soundtrack, but nothing else. It was then that he decided that he had to spice things up by allowing visitors to log in, either with Spotify or by registering, this meant that the Database criteria could now be fulfilled.
+    p.text-justify
+      | In the final state of the project, Express, Bootstrap and MongoDB had been melded together to create an app that could get any movie, its related soundtrack, display it to the user and give him the chance to save it and even export it to his Spotify account.
